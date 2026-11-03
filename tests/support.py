@@ -27,7 +27,7 @@ class Stubbed(unittest.TestCase):
         cls.root = pathlib.Path(tempfile.mkdtemp(prefix="qr", dir="/tmp"))
         cls.bin = cls.root / "bin"
         cls.bin.mkdir()
-        subprocess.run(["cc", "-std=gnu11", "-O1", "-Wall", "-Wextra", "-Werror", str(AGENT_SRC),
+        subprocess.run(["cc", "-std=gnu11", "-D_GNU_SOURCE", "-O1", "-Wall", "-Wextra", "-Werror", str(AGENT_SRC),
                         "-o", str(cls.bin / "qnxrun-agent")], check=True)
         script(cls.bin / "docker", f'#!/bin/sh\nexec "{sys.executable}" "{REPO}/tests/fake_docker.py" "$@"\n')
         script(cls.bin / "qemu-system-x86_64", f'#!/bin/sh\nexec "{sys.executable}" "{REPO}/tests/fake_qemu.py" "$@"\n')
