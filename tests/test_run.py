@@ -131,6 +131,21 @@ class RunTests(Stubbed):
         self.assertEqual(self.qnxrun("run", self.prog("n.sh", "exit 4")).returncode, 4)
         self.assertFalse(alive(marker))
 
+    def test_frozen_agent_is_an_error_after_timeout_plus_grace(self):
+        # README, Limits: if the agent stops answering, the host gives up after --timeout plus a grace period.
+        marker = f"frz{uuid.uuid4().hex}"
+        prog = self.prog(f"{marker}.sh", "kill -STOP $PPID\nwhile :; do sleep 1; done")
+        try:
+            p = self.qnxrun("run", "--timeout", "1", prog, timeout=100)
+        finally:
+            for pid in subprocess.run(["pgrep", "-f", marker], capture_output=True, text=True).stdout.split():
+                agent = subprocess.run(["ps", "-o", "ppid=", "-p", pid], capture_output=True, text=True).stdout.strip()
+                for victim in filter(None, (pid, agent)):
+                    subprocess.run(["kill", "-9", victim])
+        self.assertEqual(p.returncode, 125, p.stderr)
+        self.assertIn("no answer from the target", p.stderr)
+        self.assertEqual(self.qnxrun("run", self.prog("n.sh", "exit 6")).returncode, 6)
+
     def test_next_run_recovers_after_a_killed_host(self):
         p = self.popen("run", self.prog("kh.sh", "echo up; while :; do sleep 1; done"))
         self.assertEqual(p.stdout.readline(), "up\n")

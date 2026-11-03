@@ -26,13 +26,14 @@ Final run on November 3, 2026, after the last change to the agent: 9 tests, `OK`
 
 ## Mutants
 
-Copies of the repository outside it, one change each, nothing committed (the script is not part of the repository). Each was run against the stub suite and the relevant e2e test on QNX.
+Copies of the repository outside it, one change each, nothing committed (the script is not part of the repository). Each was run against the stub suite and, where the change is on the target or the exit path, the relevant e2e test on QNX.
 
 | Mutant | Change | Stub suite | QNX e2e |
 |---|---|---|---|
 | exit code always 0 | `Result.rc` returns 0 for `exit` (`qnxrun/console.py`) | rc 1: 7 failures, including `test_exit_code_reaches_the_host` (`0 != 7`) | rc 1: `test_exit_code_7_reaches_the_host`, `0 != 7` |
 | hash not compared | `if (strcmp(got, want) != 0)` → `if (0)` (`qnxrun-agent.c`) | rc 1: `test_adulterated_binary_is_refused_and_never_runs` | rc 1: `test_adulterated_bytes_are_refused`, `126 != 123`: the damaged file was installed and an exec was attempted |
 | timeout ignored | `deadline = 0` (`qnxrun-agent.c`) | rc 1: `test_timeout_kills_on_target_with_own_rc` (`125 != 124`), `test_timeout_is_a_failure` | rc 1: `test_timeout_kills_the_hung_program_on_the_target`, `125 != 124`: only the host watchdog ended it |
+| host watchdog removed (found by our R310 review) | `deadline = None` in `Serial.run` (`qnxrun/console.py`) | survived all 57 tests at first; with the new `test_frozen_agent_is_an_error_after_timeout_plus_grace` (the program sends `SIGSTOP` to its own agent): rc 1, the host hangs until the test's subprocess limit (`TimeoutExpired`); real code: OK, rc 125 with `no answer from the target` | not run: stub-only, the watchdog is host code |
 
 ## Failures found on the way (red before green)
 
