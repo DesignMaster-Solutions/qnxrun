@@ -110,6 +110,18 @@ New project created on November 2, 2026. The repository history records all of i
 
 https://youtu.be/hZ9zgVasOr0
 
+## Thumbnail and image gallery
+
+Files in `devpost/gallery/`, 3:2, all frames of the demo video above (real terminal output from the same recording). Thumbnail: `07.jpg`.
+
+1. `01.jpg`: qnxrun doctor checks Docker, the qnx-host image, the SDP 8.0 volume, the QNX license and QEMU before anything runs.
+2. `02.jpg`: qnxrun run hello.c: built with qcc, run on QNX 8.0.0 in QEMU; arguments arrive intact, even a literal $(reboot), and rc 7 comes home.
+3. `03.jpg`: Output streams while the program runs; --timeout kills it on the target (rc 124) and pidin finds no process left.
+4. `04.jpg`: A proxy damages one byte in transit: the target refuses the bad hash, nothing executes (rc 123), no marker file appears.
+5. `05.jpg`: CI mode: qnxrun test does a clean boot of the QNX target and writes JUnit results plus the console log as an artifact.
+6. `06.jpg`: What is proven and the limits: QNX 8.0.0 x86_64 in QEMU, three mutants caught, serial transport, no stdin, no timing published.
+7. `07.jpg`: QNX SDP does not run on a Mac. qnxrun does.
+
 ## Representative, eligibility and final submission (not form copy)
 
 The authorized Representative must complete account-specific identity and team fields, confirm eligibility and accept the rules on behalf of Design Master Solutions, LLC. No personal identity or consent is supplied by this document. Check any additional fields in the authenticated form, paste the video URL and submit before December 15, 2026, 2:00 pm EST.
