@@ -108,7 +108,7 @@ New project created on November 2, 2026. The repository history records all of i
 
 ## Demo video URL
 
-(to be filled in by the Representative)
+https://youtu.be/hZ9zgVasOr0
 
 ## Representative, eligibility and final submission (not form copy)
 

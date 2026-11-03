@@ -2,6 +2,8 @@
 
 **`cargo run` for QNX 8.0.** One command compiles your program, delivers it to a QNX 8.0 target in QEMU, streams its output and hands its exit code back to your shell, from a Mac or a Linux x86_64 machine.
 
+**Demo video:** https://youtu.be/hZ9zgVasOr0 (every command in it ran during the recording, against QNX 8.0.0 x86_64 in QEMU).
+
 ```console
 $ qnxrun run hello.c 7 "a b"
 hello from QNX 8.0.0 x86pc
