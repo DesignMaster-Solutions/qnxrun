@@ -1,0 +1,21 @@
+# NOT PROVEN on any runner. Example for a self-hosted Linux x86_64 runner where the SDP volume
+# (qnx-home) and the qnx-host image already exist, installed by an administrator with `qnxrun install`.
+# Do not use this on GitHub-hosted runners: never cache, upload or log the SDP or a license.
+name: qnx-target-tests
+on: [push]
+jobs:
+  qnx:
+    runs-on: [self-hosted, linux, x64, qnx-sdp]
+    steps:
+      - uses: actions/checkout@v4
+      - run: pipx install git+https://github.com/DesignMaster-Solutions/qnxrun
+      - run: qnxrun doctor
+      - run: qnxrun build -Wall -Werror tests/t_basic.c -o build/t_basic
+      - run: qnxrun test build/t_basic --junit build/junit.xml --console build/qnx-console.log --timeout 120
+      - if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: qnx-target-results
+          path: |
+            build/junit.xml
+            build/qnx-console.log

@@ -1,0 +1,20 @@
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "qnxrun"
+version = "0.1.0"
+description = "cargo run for QNX 8.0: compile, deliver and run in QEMU, with the exit code back on the host"
+readme = "README.md"
+license = { file = "LICENSE" }
+requires-python = ">=3.8"
+
+[project.scripts]
+qnxrun = "qnxrun.cli:main"
+
+[tool.setuptools]
+packages = ["qnxrun"]
+
+[tool.setuptools.package-data]
+qnxrun = ["host/*"]
