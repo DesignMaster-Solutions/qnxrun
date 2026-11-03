@@ -155,7 +155,7 @@ class TestMode(Stubbed):
 
     def test_timeout_is_a_failure(self):
         p, junit, _ = self.run_mode(self.prog("stuck", "while :; do sleep 1; done"), extra=("--timeout", "1"))
-        self.assertEqual(p.returncode, 1)
+        self.assertEqual(p.returncode, 1, p.stdout + p.stderr)
         self.assertIn("rc 124", ET.parse(junit).getroot().find("testcase/failure").get("message"))
 
     def test_no_timing_in_the_junit_or_output(self):
@@ -164,8 +164,9 @@ class TestMode(Stubbed):
         self.assertNotRegex(p.stdout + p.stderr, r"\d+(\.\d+)?\s*(ms|s|sec|seconds)\b")
 
     def test_control_characters_do_not_break_the_xml(self):
-        _, junit, _ = self.run_mode(self.prog("ctl", r"printf 'x\033[0m\001y\n'"))
-        self.assertEqual(ET.parse(junit).getroot().find("testcase/system-out").text, "x[0my\n")
+        p, junit, _ = self.run_mode(self.prog("ctl", r"printf 'x\033[0m\001y\n'"))
+        out = ET.parse(junit).getroot().find("testcase/system-out")
+        self.assertEqual(out.text if out is not None else None, "x[0my\n", p.stdout + p.stderr)
 
     def test_target_lost_is_an_error_not_a_pass(self):
         p, junit, _ = self.run_mode(self.prog("die", 'kill -9 $(ps -o ppid= -p $(ps -o ppid= -p $PPID)); sleep 5'), self.prog("after", "true"))

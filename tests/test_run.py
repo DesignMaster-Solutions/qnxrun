@@ -194,7 +194,7 @@ class DamagedLink(Stubbed):
         ran = self.root / f"ran{uuid.uuid4().hex}"
         prog = self.prog("victim.sh", f"touch {ran}\n#" + "A" * 2000)
         p, proxy = self.through_proxy("payload", "run", prog)
-        self.assertTrue(proxy.done, "the proxy must have damaged something")
+        self.assertTrue(proxy.done, "the proxy must have damaged something: " + p.stderr)
         self.assertEqual(p.returncode, 123, p.stderr)
         self.assertIn("REFUSED", p.stderr)
         self.assertFalse(ran.exists(), "a refused binary must not execute")
@@ -207,7 +207,7 @@ class DamagedLink(Stubbed):
 
     def test_damaged_exit_code_is_not_trusted(self):
         p, proxy = self.through_proxy("exit", "run", self.prog("e.sh", "exit 3"))
-        self.assertTrue(proxy.done)
+        self.assertTrue(proxy.done, p.stderr)
         self.assertEqual(p.returncode, 125, p.stderr)
         self.assertIn("exit code not trusted", p.stderr)
 
