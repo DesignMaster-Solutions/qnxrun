@@ -1,0 +1,44 @@
+{
+  "brand": "qnxrun | Design Master Solutions, LLC | QNX 8.0.0 x86_64 in QEMU",
+  "voice": "Samantha",
+  "rate": 186,
+  "bg": "#101418",
+  "accent": "#e5484d",
+  "out": "demo-raw.mp4",
+  "scenes": [
+    {
+      "title": "QNX SDP does not run on a Mac. qnxrun does.",
+      "clip": "demo-term.mp4", "clip_from": 0, "clip_to": 11.29, "clip_y": 200,
+      "say": "The QNX SDP does not run on a Mac. Even on Linux, running one test on the target means an image, QEMU, a network and ssh. qnxrun gives QNX eight the cargo run loop. Doctor checks Docker, the SDP volume, the license with a real q c c compile, and QEMU."
+    },
+    {
+      "title": "Compile, deliver, run: the exit code comes home",
+      "clip": "demo-term.mp4", "clip_from": 11.29, "clip_to": 38.07, "clip_y": 200,
+      "say": "This C file is compiled by q c c in a container, sent over the serial console of a QNX eight target in QEMU, and run there. There is no network and no ssh. Arguments arrive byte for byte, even a dollar paren reboot, because no shell parses them. The program exits seven, and the host shell gets seven."
+    },
+    {
+      "title": "Output streams. --timeout kills on the target.",
+      "clip": "demo-term.mp4", "clip_from": 38.07, "clip_to": 86.24, "clip_y": 200,
+      "say": "The program gets a QNX pseudo terminal, so its output streams: this line arrives while it is still running. When the timeout expires, the agent on QNX kills the whole process group, and the host gets one twenty four. The next program ignores SIGTERM and forks a child. After the timeout, pidin on the target finds nothing left."
+    },
+    {
+      "title": "One damaged byte, and nothing executes",
+      "clip": "demo-term.mp4", "clip_from": 86.24, "clip_to": 129.67, "clip_y": 200,
+      "say": "Now a proxy on the serial line flips a single byte of the transfer. The agent hashes the file on QNX before it may run. The hash does not match, the file is deleted, and the host gets one twenty three. The marker this program would create does not exist. Results are hash checked too, so output cannot forge an exit code."
+    },
+    {
+      "title": "CI mode: clean boot, JUnit, console artifact",
+      "clip": "demo-term.mp4", "clip_from": 129.67, "clip_to": 160.8, "clip_y": 200,
+      "say": "For CI, qnxrun test boots a clean target, runs each binary, saves the console and writes JUnit XML. One test exited three, so the run exits one, and the failure is in the report."
+    },
+    {
+      "title": "What is proven, and the limits",
+      "lines": ["github.com/DesignMaster-Solutions/qnxrun  (Apache-2.0)",
+                "Proven on QNX 8.0.0 x86_64 in QEMU; stub suite in CI on Linux and macOS",
+                "Three deliberate mutants caught: exit code, target hash, timeout",
+                "Limits: x86_64 QEMU target, serial transport, no stdin forwarding",
+                "Bring your own licensed QNX SDP 8.0. No timing is published."],
+      "say": "Every check here was seen failing first, and three deliberate mutants were caught. The target is x86 sixty four in QEMU, and you bring your own licensed SDP. qnxrun is open source, by Design Master Solutions."
+    }
+  ]
+}

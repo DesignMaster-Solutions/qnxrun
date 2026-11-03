@@ -18,8 +18,9 @@ type_cmd 'qnxrun run hello.c 7 "a b" '"'"'$(reboot)'"'"'; echo "host rc=$?"' 4
 type_cmd 'qnxrun run --timeout 5 build/stream; echo "host rc=$?"' 3
 type_cmd 'qnxrun run --timeout 5 build/hang; echo "host rc=$?"' 2
 type_cmd "qnxrun shell -c 'pidin -f a | grep -c hang'" 3
+type_cmd "qnxrun shell -c 'rm -f /tmp/qnxrun-victim-ran'" 1
 type_cmd '(cd ../.. && python3 -m tests.tamper tests/e2e/build/victim); echo "host rc=$?"' 2
-type_cmd "qnxrun shell -c 'ls /tmp/qnxrun-victim-ran'" 3
+type_cmd "qnxrun shell -c 'ls /tmp/qnxrun-victim-ran'; echo \"host rc=\$?\"" 3
 type_cmd 'qnxrun test build/hello build/victim --junit junit.xml; echo "host rc=$?"' 3
 type_cmd "grep -o '<failure[^>]*>' junit.xml" 4
 printf '\n'

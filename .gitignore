@@ -7,3 +7,5 @@ dist/
 *.mp4
 *.gif
 .DS_Store
+junit.xml
+qnxrun-console.log

@@ -30,7 +30,33 @@ qnxrun run hello.c 7 "a b"    # compile with qcc, boot the target once, run, str
 qnxrun test build/t_* --junit junit.xml   # CI mode: clean boot, every binary, JUnit XML, console artifact
 ```
 
-![qnxrun demo](docs/demo.gif)
+A real session on the host against QNX 8.0.0 x86_64 in QEMU (from `video/demo-session.sh`):
+
+```console
+$ qnxrun run --timeout 5 build/stream; echo "host rc=$?"
+first line, still running
+qnxrun: --timeout 5 expired; process killed on the target (rc 124)
+host rc=124
+$ qnxrun run --timeout 5 build/hang; echo "host rc=$?"
+hanging
+qnxrun: --timeout 5 expired; process killed on the target (rc 124)
+host rc=124
+$ qnxrun shell -c 'pidin -f a | grep -c hang'
+0
+$ (cd ../.. && python3 -m tests.tamper tests/e2e/build/victim); echo "host rc=$?"
+qnxrun: REFUSED: transfer refused by the target: bad hash 25644c2e...; nothing was executed
+proxy damaged one byte: True
+host rc=123
+$ qnxrun test build/hello build/victim --junit junit.xml; echo "host rc=$?"
+qnxrun: clean boot of the QNX target
+hello from QNX 8.0.0 x86pc
+PASS hello rc=0
+victim ran
+FAIL victim rc=3
+qnxrun: console saved to qnxrun-console.log
+1 passed, 1 failed
+host rc=1
+```
 
 ## Install
 
